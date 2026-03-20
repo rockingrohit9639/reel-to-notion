@@ -16,12 +16,12 @@ const reelSchema = z.object({
 	title: z
 		.string()
 		.describe(
-			"A clean, concise title for the reel (max 60 chars). No emojis, no hashtags.",
+			"The specific subject or topic of the reel (max 60 chars). Extract the core thing being shown — a place name, dish name, product, technique, person, etc. For example: 'Santorini, Greece', 'Butter Chicken Recipe', 'iPhone 16 Pro Camera'. Never use generic titles like 'Travel Reel' or 'Amazing Recipe'. No emojis, no hashtags.",
 		),
 	description: z
 		.string()
 		.describe(
-			"A 1-2 sentence summary of what the reel is about (max 150 chars).",
+			"A 1-2 sentence factual takeaway from the reel (max 150 chars). Focus on the key information, tip, or insight — not what the reel shows. For example: 'Best visited in September for fewer crowds and warm weather' instead of 'A travel reel showcasing Santorini'.",
 		),
 	tags: z
 		.array(z.string())
