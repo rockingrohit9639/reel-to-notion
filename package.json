@@ -1,19 +1,21 @@
 {
-  "name": "reel-to-notion",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
-  },
-  "dependencies": {
-    "@ai-sdk/google": "^3.0.43",
-    "@notionhq/client": "^5.14.0",
-    "ai": "^6.0.103",
-    "elysia": "latest",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "module": "src/index.js"
+	"name": "reel-to-notion",
+	"version": "1.0.50",
+	"scripts": {
+		"dev": "bun run --watch src/index.ts",
+		"check": "biome check .",
+		"format": "biome check --write ."
+	},
+	"dependencies": {
+		"@ai-sdk/google": "^3.0.43",
+		"@notionhq/client": "^5.14.0",
+		"ai": "^6.0.103",
+		"elysia": "latest",
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.8",
+		"bun-types": "latest"
+	},
+	"module": "src/index.js"
 }
