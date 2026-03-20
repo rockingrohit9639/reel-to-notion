@@ -4,8 +4,6 @@ import type { NotionReelEntry } from "./ai";
 function getNotionApiKey(): string {
 	const key = process.env.NOTION_API_KEY;
 	if (!key) throw new Error("NOTION_API_KEY environment variable is not set");
-
-	console.log("Notion API key:", key);
 	return key;
 }
 

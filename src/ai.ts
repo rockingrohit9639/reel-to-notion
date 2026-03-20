@@ -43,8 +43,6 @@ export async function extractStructuredData(
 			temperature: 0.3,
 		});
 
-		console.log("Gemini structured response:", output);
-
 		if (!output) return null;
 
 		return {
