@@ -16,6 +16,44 @@ function getTriageDbId(): string {
 	return id;
 }
 
+// The Notion SDK v5 (API version 2025-09-03) removed databases.query in favor
+// of dataSources.query, but that endpoint doesn't resolve database IDs. Using a
+// direct fetch with the older API version (2022-06-28) which still supports
+// the databases/{id}/query endpoint.
+export async function findDuplicateByTitle(
+	title: string,
+): Promise<string | null> {
+	const res = await fetch(
+		`https://api.notion.com/v1/databases/${getTriageDbId()}/query`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${getNotionApiKey()}`,
+				"Notion-Version": "2022-06-28",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				filter: {
+					property: "Title",
+					title: { equals: title },
+				},
+				page_size: 1,
+			}),
+		},
+	);
+
+	if (!res.ok) {
+		console.error("Duplicate check failed:", await res.text());
+		return null;
+	}
+
+	const data = (await res.json()) as { results: Array<{ id: string }> };
+	if (data.results.length === 0) return null;
+
+	const id = data.results[0].id.replace(/-/g, "");
+	return `https://notion.so/${id}`;
+}
+
 export async function addToTriage(entry: NotionReelEntry) {
 	const response = await notion.pages.create({
 		parent: { database_id: getTriageDbId() },

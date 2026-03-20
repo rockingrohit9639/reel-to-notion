@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia";
 import { extractStructuredData } from "./ai";
-import { addToTriage } from "./notion";
+import { addToTriage, findDuplicateByTitle } from "./notion";
 import { scrapeReelData } from "./scraper";
 import {
 	formatTriageFailure,
@@ -27,13 +27,27 @@ app.post(
 			const structured = await extractStructuredData(reelData);
 			if (!structured) return { success: false, error: "AI extraction failed" };
 
+			console.log("Checking for duplicates...");
+			const existingUrl = await findDuplicateByTitle(structured.title);
+			if (existingUrl) {
+				await sendTelegramMessage(
+					chatId,
+					`⚠️ "<b>${structured.title}</b>" is already in your Triage.\n\n<a href="${existingUrl}">Open existing entry</a>`,
+				);
+				return { success: false, error: "Duplicate title" };
+			}
+
 			console.log("Adding to Notion triage...");
 			const notionPage = await addToTriage(structured);
 			console.log("Added to Notion");
 
 			await sendTelegramMessage(
 				chatId,
-				formatTriageSuccess(structured.title, structured.description, notionPage.url),
+				formatTriageSuccess(
+					structured.title,
+					structured.description,
+					notionPage.url,
+				),
 			);
 
 			return { success: true, data: structured, notionUrl: notionPage.url };
