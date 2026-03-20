@@ -24,9 +24,11 @@ const reelSchema = z.object({
 			"A 1-2 sentence factual takeaway from the reel (max 150 chars). Focus on the key information, tip, or insight — not what the reel shows. For example: 'Best visited in September for fewer crowds and warm weather' instead of 'A travel reel showcasing Santorini'.",
 		),
 	tags: z
-		.array(z.string())
+		.array(
+			z.enum(["travel", "tech", "photography", "fashion", "music", "food"]),
+		)
 		.describe(
-			"3-6 readable, lowercase, hyphen-separated tags categorizing the reel content (e.g. 'fitness', 'cooking', 'cinematic-lighting', 'editing-tips', 'tech-review'). No '#' prefix. Always use hyphens to separate words, never combine them.",
+			"1-3 tags from the predefined list that best match the reel content.",
 		),
 });
 
