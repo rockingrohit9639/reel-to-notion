@@ -9,6 +9,7 @@ export interface NotionReelEntry {
 	tags: string[];
 	author: string | null;
 	url: string;
+	source: string;
 }
 
 const reelSchema = z.object({
@@ -25,7 +26,7 @@ const reelSchema = z.object({
 	tags: z
 		.array(z.string())
 		.describe(
-			"3-6 lowercase tags categorizing the reel content (e.g. 'fitness', 'cooking', 'tech-review'). No '#' prefix.",
+			"3-6 readable, lowercase, hyphen-separated tags categorizing the reel content (e.g. 'fitness', 'cooking', 'cinematic-lighting', 'editing-tips', 'tech-review'). No '#' prefix. Always use hyphens to separate words, never combine them.",
 		),
 });
 
@@ -52,6 +53,7 @@ export async function extractStructuredData(
 			tags: output.tags,
 			author: reelData.authorName,
 			url: reelData.url,
+			source: "instagram-reel",
 		};
 	} catch (error) {
 		console.error("Gemini extraction failed:", error);
